@@ -16,6 +16,19 @@ class ExpenseController extends Controller
         // Sirf Login wale user ka data nikalo
         $query = Expense::where('user_id', Auth::id())->latest();
 
+        // 2. Date Filter Logic
+        if ($request->filter == '7days') {
+            $query->where('date', '>=', now()->subDays(7));
+        } elseif ($request->filter == '30days') {
+            $query->where('date', '>=', now()->subDays(30));
+        } elseif ($request->filter == 'this_month') {
+            $query->whereMonth('date', now()->month)
+                  ->whereYear('date', now()->year);
+        } elseif ($request->filter == 'last_month') {
+            $query->whereMonth('date', now()->subMonth()->month)
+                  ->whereYear('date', now()->subMonth()->year);
+        }
+
         // Search Logic
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;

@@ -11,13 +11,15 @@
                 <h3>📋 Mere Kharche</h3>
             </div>
 
-
+            
             <div class="col-md-6 text-end">
                 <a href="{{ route('export') }}" class="btn btn-success me-2">
                    📥 Download Report
                 </a>
                 <a href="/add" class="btn btn-primary">+ Add New</a>
             </div>
+
+           
 
             <div class="col-md-12">
                 <form action="/" method="GET" class="row g-2">
@@ -88,7 +90,34 @@
             </div>
             @endif
         </div>
-        
+         <div class="row mb-4">
+    
+    <div class="col-md-4">
+        <form action="/" method="GET" id="filterForm">
+            <input type="hidden" name="search" value="{{ request('search') }}">
+            
+            <select name="filter" class="form-select border-primary fw-bold text-primary" onchange="document.getElementById('filterForm').submit()">
+                <option value="">📅 All Time (Sab Dikhao)</option>
+                <option value="7days" {{ request('filter') == '7days' ? 'selected' : '' }}>Last 7 Days</option>
+                <option value="30days" {{ request('filter') == '30days' ? 'selected' : '' }}>Last 30 Days</option>
+                <option value="this_month" {{ request('filter') == 'this_month' ? 'selected' : '' }}>This Month</option>
+                <option value="last_month" {{ request('filter') == 'last_month' ? 'selected' : '' }}>Last Month</option>
+            </select>
+        </form>
+    </div>
+
+    <div class="col-md-8">
+        <form action="/" method="GET">
+            <div class="input-group">
+                <input type="hidden" name="filter" value="{{ request('filter') }}">
+                
+                <input type="text" name="search" class="form-control" placeholder="Search expenses..." value="{{ request('search') }}">
+                <button class="btn btn-outline-primary" type="submit">🔍 Search</button>
+            </div>
+        </form>
+    </div>
+
+</div>
         <div class="row mb-4">
             <div class="col-12">
                 <h5>📊 Kharcho ka Hisaab (Category Wise)</h5>

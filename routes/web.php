@@ -4,31 +4,31 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExpenseController;
 use Illuminate\Support\Facades\Auth;
 
-// 1. Login/Register Routes
+Route::get('/', function () {
+    return redirect('/login');
+});
+
 Auth::routes();
 
-// 2. PROTECTED ROUTES (Jo sirf Login wale dekh sakte hain)
-// Humne 'middleware' group laga diya hai
+// Saare routes login ke baad hi khulenge
 Route::middleware(['auth'])->group(function () {
     
-    // Home Page
+    // 1. Dashboard (Home)
     Route::get('/', [ExpenseController::class, 'index'])->name('home');
 
-    // Add Expense
+    // 2. Add New Expense
     Route::get('/add', [ExpenseController::class, 'create']);
-    Route::post('/save-expense', [ExpenseController::class, 'store']);
-// Baki routes ke saath isse bhi jodein
-    Route::get('/profile', [ExpenseController::class, 'profile'])->name('profile');
-    // Edit Expense
-    Route::get('/edit/{id}', [ExpenseController::class, 'edit']);
-    Route::put('/update/{id}', [ExpenseController::class, 'update']);
+    Route::post('/add', [ExpenseController::class, 'store']);
 
-    // Delete Expense
+    // 3. Edit & Delete
+    Route::get('/edit/{id}', [ExpenseController::class, 'edit']);
+    Route::post('/edit/{id}', [ExpenseController::class, 'update']);
     Route::delete('/delete/{id}', [ExpenseController::class, 'destroy']);
-    // Profile Update Route
+
+    // 4. User Profile
+    Route::get('/profile', [ExpenseController::class, 'profile'])->name('profile');
     Route::post('/profile/update', [ExpenseController::class, 'updateProfile']);
 
-    // Export Data Route
+    // 5. Export Excel/CSV
     Route::get('/export', [ExpenseController::class, 'export'])->name('export');
-
 });
